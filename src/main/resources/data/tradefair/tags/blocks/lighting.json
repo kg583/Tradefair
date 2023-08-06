@@ -1,0 +1,13 @@
+{
+  "values": [
+    "#minecraft:candles",
+    "#minecraft:froglights",
+    "#minecraft:torches",
+    "minecraft:end_rod",
+    "minecraft:jack_o_lantern",
+    "minecraft:lantern",
+    "minecraft:redstone_lamp",
+    "minecraft:sea_lantern",
+    "minecraft:soul_lantern"
+  ]
+}

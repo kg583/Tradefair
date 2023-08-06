@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "tradefair",
+  "version": "${version}",
+  "name": "Tradefair",
+  "description": "Villages!",
+  "authors": [
+    "Ampersand",
+    "fghsgh",
+    "kg583"
+  ],
+  "contact": {
+    "repo": "https://github.com/kg583/Tradefair"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/tradefair/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "preLaunch": [
+      "io.github.kg583.tradefair.PreLaunch"
+    ],
+    "main": [
+      "io.github.kg583.tradefair.Main"
+    ],
+    "mm:early_risers": [
+      "io.github.kg583.tradefair.EarlyRiser"
+    ]
+  },
+  "accessWidener": "tradefair.accesswidener",
+  "mixins": [
+    "tradefair.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

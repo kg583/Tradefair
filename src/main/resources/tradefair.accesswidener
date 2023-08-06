@@ -1,0 +1,5 @@
+accessWidener	v1	named
+
+# POI registration
+accessible method net/minecraft/world/poi/PointOfInterestTypes of (Ljava/lang/String;)Lnet/minecraft/registry/RegistryKey;
+accessible method net/minecraft/world/poi/PointOfInterestTypes register (Lnet/minecraft/registry/Registry;Lnet/minecraft/registry/RegistryKey;Ljava/util/Set;II)Lnet/minecraft/world/poi/PointOfInterestType;
