@@ -1,21 +1,30 @@
 package io.github.kg583.tradefair.registry;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import io.github.kg583.tradefair.mixin.common.VillagerEntityAccessor;
 import net.minecraft.block.Block;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.GlobalPos;
 import net.minecraft.world.poi.PointOfInterestType;
+import net.minecraft.world.poi.PointOfInterestTypes;
 
+import java.util.Objects;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static io.github.kg583.tradefair.Main.MOD_ID;
 
-public class PointOfInterestTypes extends net.minecraft.world.poi.PointOfInterestTypes {
+public class NewPointOfInterestTypes extends PointOfInterestTypes {
     public static final RegistryKey<PointOfInterestType> LIGHTING = RegistryKey.of(RegistryKeys.POINT_OF_INTEREST_TYPE,
             new Identifier(MOD_ID, "lighting"));
 
@@ -54,5 +63,9 @@ public class PointOfInterestTypes extends net.minecraft.world.poi.PointOfInteres
         registerFromTags(WOOL_CARPET, BlockTags.WOOL_CARPETS);
 
         registerFromTags(LIGHTING, new Identifier("tradefair", "lighting"));
+
+        VillagerEntity.POINTS_OF_INTEREST.put(NewMemoryModuleType.HOUSE_EXTERIOR_DOOR,
+                (villagerEntity, pointOfInterestType) -> Objects.equals(pointOfInterestType,
+                        RegistryEntry.of(Registries.POINT_OF_INTEREST_TYPE.get(WOODEN_DOOR))));
     }
 }
