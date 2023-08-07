@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,14 +26,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.stream.Stream;
 
 @Mixin(VillagerEntity.class)
-public abstract class FindExteriorDoor extends MerchantEntity implements InteractionObserver, VillagerDataContainer {
+public abstract class EvaluateDecor extends MerchantEntity implements InteractionObserver, VillagerDataContainer {
 
-    public FindExteriorDoor(EntityType<? extends MerchantEntity> entityType, World world) {
+    public EvaluateDecor(EntityType<? extends MerchantEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Inject(method = "wakeUp", at = @At(value = "TAIL"))
-    private void searchForDoor(CallbackInfo ci) {
+    private void evaluateDecor(CallbackInfo ci) {
+        findExteriorDoor();
+    }
+
+    @Unique
+    private void findExteriorDoor() {
         int radius = 10;
 
         Stream<Pair<RegistryEntry<PointOfInterestType>, BlockPos>>
@@ -49,9 +55,6 @@ public abstract class FindExteriorDoor extends MerchantEntity implements Interac
                 this.brain.remember(NewMemoryModuleType.HOUSE_EXTERIOR_DOOR,
                         GlobalPos.create(this.getWorld().getRegistryKey(), pos));
             }
-            this.navigation.stop();
         }
-
-
     }
 }

@@ -4,7 +4,7 @@
   "package": "io.github.kg583.tradefair.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "common.FindExteriorDoor",
+    "common.EvaluateDecor",
     "common.ThawedSimpleRegistry",
     "common.VillagerEntityAccessor"
   ],
