@@ -33,31 +33,33 @@ public class NewPointOfInterestTypes extends PointOfInterestTypes {
     public static final RegistryKey<PointOfInterestType> WOOL_CARPET = of("wool_carpet");
 
     @SafeVarargs
-    private static void registerFromTags(RegistryKey<PointOfInterestType> key, TagKey<Block>... tags) {
+    private static void registerFromTags(RegistryKey<PointOfInterestType> key, boolean claimable,
+                                         TagKey<Block>... tags) {
         register(Registries.POINT_OF_INTEREST_TYPE, key, Stream.of(tags)
                 .flatMap((tag) -> StreamSupport.stream(Registries.BLOCK.iterateEntries(tag).spliterator(), false))
                 .flatMap((entry) -> entry.value().getStateManager().getStates().stream())
-                .collect(ImmutableSet.toImmutableSet()), 0, 1);
+                .collect(ImmutableSet.toImmutableSet()), claimable ? 1 : 0, 1);
     }
 
-    private static void registerFromTags(RegistryKey<PointOfInterestType> key, Identifier... ids) {
+    private static void registerFromTags(RegistryKey<PointOfInterestType> key, boolean claimable, Identifier... ids) {
         register(Registries.POINT_OF_INTEREST_TYPE, key, Stream.of(ids).flatMap((id) -> StreamSupport.stream(
                         Registries.BLOCK.iterateEntries(TagKey.of(RegistryKeys.BLOCK, id)).spliterator(), false))
                 .flatMap((entry) -> entry.value().getStateManager().getStates().stream())
-                .collect(ImmutableSet.toImmutableSet()), 0, 1);
+                .collect(ImmutableSet.toImmutableSet()), claimable ? 1 : 0, 1);
     }
 
     public static void register() {
-        registerFromTags(SIGN, BlockTags.ALL_SIGNS);
-        registerFromTags(BANNER, BlockTags.BANNERS);
-        registerFromTags(BOOKSHELF, new Identifier("c", "bookshelves"));
-        registerFromTags(FLOWER_POT, BlockTags.FLOWER_POTS);
-        registerFromTags(GLASS, new Identifier("c", "glass"));
-        registerFromTags(GLAZED_TERRACOTTA, new Identifier("c", "glazed_terracottas"));
-        registerFromTags(WOODEN_DOOR, BlockTags.WOODEN_DOORS);
-        registerFromTags(WOOL_CARPET, BlockTags.WOOL_CARPETS);
+        registerFromTags(SIGN, true, BlockTags.ALL_SIGNS);
+        registerFromTags(BANNER, true, BlockTags.BANNERS);
+        registerFromTags(BOOKSHELF, true, new Identifier("c", "bookshelves"));
+        registerFromTags(FLOWER_POT, true, BlockTags.FLOWER_POTS);
+        registerFromTags(GLASS, false, new Identifier("c", "glass_blocks"),
+                new Identifier("c", "glass_panes"));
+        registerFromTags(GLAZED_TERRACOTTA, false, new Identifier("c", "glazed_terracottas"));
+        registerFromTags(WOODEN_DOOR, true, BlockTags.WOODEN_DOORS);
+        registerFromTags(WOOL_CARPET, true, BlockTags.WOOL_CARPETS);
 
-        registerFromTags(LIGHTING, new Identifier("tradefair", "lighting"));
+        registerFromTags(LIGHTING, false, new Identifier("tradefair", "lighting"));
 
         VillagerEntity.POINTS_OF_INTEREST.put(NewMemoryModuleType.HOUSE_EXTERIOR_DOOR,
                 (villagerEntity, pointOfInterestType) -> Objects.equals(pointOfInterestType,
