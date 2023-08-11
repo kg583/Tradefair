@@ -13,7 +13,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.poi.PointOfInterestType;
 import net.minecraft.world.poi.PointOfInterestTypes;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -51,7 +53,7 @@ public class NewPointOfInterestTypes extends PointOfInterestTypes {
     public static void register() {
         registerFromTags(SIGN, true, BlockTags.ALL_SIGNS);
         registerFromTags(BANNER, true, BlockTags.BANNERS);
-        registerFromTags(BOOKSHELF, true, new Identifier("c", "bookshelves"));
+        registerFromTags(BOOKSHELF, false, new Identifier("c", "bookshelves"));
         registerFromTags(FLOWER_POT, true, BlockTags.FLOWER_POTS);
         registerFromTags(GLASS, false, new Identifier("c", "glass_blocks"),
                 new Identifier("c", "glass_panes"));

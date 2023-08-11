@@ -15,10 +15,11 @@ public class EarlyRiser implements Runnable {
 
         builder.addEnum("CARPETS","carpets", 1, 30, 0, 1);
         builder.addEnum("DECOR_BLOCKS","decor_blocks", 1, 25, 0, 1);
-        builder.addEnum("FLOWERS", "flowers", 1, 20, 0, 1);
+        builder.addEnum("FLOWER_POTS", "flower_pots", 1, 20, 0, 1);
         builder.addEnum("GLASS", "glass", 1, 30, 0, 1);
         builder.addEnum("LIGHTING","lighting", 2, 200, 0, 5);
         builder.addEnum("SIGNAGE","signage", 1, 5, 0, 1);
+        builder.build();
     }
 
     @Override
