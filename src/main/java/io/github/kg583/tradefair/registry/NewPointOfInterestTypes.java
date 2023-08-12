@@ -13,17 +13,15 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.poi.PointOfInterestType;
 import net.minecraft.world.poi.PointOfInterestTypes;
 
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static io.github.kg583.tradefair.Main.MOD_ID;
 
 public class NewPointOfInterestTypes extends PointOfInterestTypes {
-    public static final RegistryKey<PointOfInterestType> LIGHTING = RegistryKey.of(RegistryKeys.POINT_OF_INTEREST_TYPE,
-            new Identifier(MOD_ID, "lighting"));
+    public static final RegistryKey<PointOfInterestType> LIGHTING =
+            RegistryKey.of(RegistryKeys.POINT_OF_INTEREST_TYPE, new Identifier(MOD_ID, "lighting"));
 
     public static final RegistryKey<PointOfInterestType> BANNER = of("banner");
     public static final RegistryKey<PointOfInterestType> BOOKSHELF = of("bookshelf");
@@ -51,19 +49,18 @@ public class NewPointOfInterestTypes extends PointOfInterestTypes {
     }
 
     public static void register() {
-        registerFromTags(SIGN, true, BlockTags.ALL_SIGNS);
-        registerFromTags(BANNER, true, BlockTags.BANNERS);
+        registerFromTags(SIGN, false, BlockTags.ALL_SIGNS);
+        registerFromTags(BANNER, false, BlockTags.BANNERS);
         registerFromTags(BOOKSHELF, false, new Identifier("c", "bookshelves"));
-        registerFromTags(FLOWER_POT, true, BlockTags.FLOWER_POTS);
-        registerFromTags(GLASS, false, new Identifier("c", "glass_blocks"),
-                new Identifier("c", "glass_panes"));
+        registerFromTags(FLOWER_POT, false, BlockTags.FLOWER_POTS);
+        registerFromTags(GLASS, false, new Identifier("c", "glass_blocks"), new Identifier("c", "glass_panes"));
         registerFromTags(GLAZED_TERRACOTTA, false, new Identifier("c", "glazed_terracottas"));
         registerFromTags(WOODEN_DOOR, true, BlockTags.WOODEN_DOORS);
-        registerFromTags(WOOL_CARPET, true, BlockTags.WOOL_CARPETS);
+        registerFromTags(WOOL_CARPET, false, BlockTags.WOOL_CARPETS);
 
         registerFromTags(LIGHTING, false, new Identifier("tradefair", "lighting"));
 
-        VillagerEntity.POINTS_OF_INTEREST.put(NewMemoryModuleType.HOUSE_EXTERIOR_DOOR,
+        VillagerEntity.POINTS_OF_INTEREST.put(NewMemoryModuleType.ROOM_DOOR,
                 (villagerEntity, pointOfInterestType) -> Objects.equals(pointOfInterestType,
                         RegistryEntry.of(Registries.POINT_OF_INTEREST_TYPE.get(WOODEN_DOOR))));
     }

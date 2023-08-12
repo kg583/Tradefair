@@ -4,9 +4,11 @@ import com.chocohead.mm.api.ClassTinkerers;
 import com.google.common.collect.ImmutableList;
 import io.github.kg583.tradefair.registry.NewMemoryModuleType;
 import io.github.kg583.tradefair.registry.NewPointOfInterestTypes;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InteractionObserver;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
+import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
@@ -15,6 +17,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.village.VillageGossipType;
 import net.minecraft.village.VillagerDataContainer;
@@ -33,7 +36,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.stream.Stream;
 
 @Mixin(VillagerEntity.class)
 public abstract class EvaluateDecor extends MerchantEntity implements InteractionObserver, VillagerDataContainer {
@@ -47,68 +49,76 @@ public abstract class EvaluateDecor extends MerchantEntity implements Interactio
 
     @Inject(method = "wakeUp", at = @At(value = "TAIL"))
     private void evaluateDecor(CallbackInfo ci) {
-        findExteriorDoor();
+        if (!findDoor()) return;
 
         generateGossip("CARPETS", true, 5, NewPointOfInterestTypes.WOOL_CARPET);
         generateGossip("DECOR_BLOCKS", false, 5, NewPointOfInterestTypes.BOOKSHELF,
                 NewPointOfInterestTypes.GLAZED_TERRACOTTA);
         generateGossip("FLOWER_POTS", true, 5, NewPointOfInterestTypes.FLOWER_POT);
-        generateGossip("GLASS", false, 5, NewPointOfInterestTypes.GLASS);
+        generateGossip("GLASS", true, 5, NewPointOfInterestTypes.GLASS);
         generateGossip("LIGHTING", false, 20, NewPointOfInterestTypes.LIGHTING);
         generateGossip("SIGNAGE", true, 5, NewPointOfInterestTypes.BANNER, NewPointOfInterestTypes.SIGN);
     }
 
     @SafeVarargs
     @Unique
-    private void generateGossip(String gossipType, boolean claimable, int value,
+    private void generateGossip(String gossipType, boolean personal, int value,
                                 RegistryKey<PointOfInterestType>... poiTypes) {
-        int radius = 8;
+        int radius = 20;
         BlockPos pos = this.getBlockPos();
 
-        Stream<PointOfInterest> pois = ((ServerWorld) this.getWorld()).getPointOfInterestStorage().getInCircle(
+        ImmutableList<PointOfInterest> pois = ((ServerWorld) this.getWorld()).getPointOfInterestStorage().getInCircle(
                         entry -> Arrays.stream(poiTypes)
                                 .anyMatch(key -> Registries.POINT_OF_INTEREST_TYPE.get(key) == entry.value()), pos,
                         radius,
-                        claimable ? PointOfInterestStorage.OccupationStatus.HAS_SPACE :
-                                PointOfInterestStorage.OccupationStatus.ANY)
-                .sorted(Comparator.comparingDouble(poi -> poi.getPos().getSquaredDistance(pos)));
+                        PointOfInterestStorage.OccupationStatus.ANY)
+                .sorted(Comparator.comparingDouble(poi -> poi.getPos().getSquaredDistance(pos)))
+                .collect(ImmutableList.toImmutableList());
 
         BirdNavigation navigation = new BirdNavigation(this, this.getWorld());
-        navigation.setCanEnterOpenDoors(false);
-        navigation.setCanPathThroughDoors(false);
+        navigation.setCanEnterOpenDoors(!personal);
+        navigation.setCanPathThroughDoors(!personal);
 
         PlayerEntity player = this.getWorld().getClosestPlayer(this.getX(), this.getY(), this.getZ(), 50, null);
 
-        for (PointOfInterest poi : pois.collect(ImmutableList.toImmutableList())) {
+        for (PointOfInterest poi : pois) {
             Path path = navigation.findPathTo(poi.getPos(), radius);
 
-            if (path != null) {
-                if (player != null) this.gossip.startGossip(player.getUuid(),
-                        ClassTinkerers.getEnum(VillageGossipType.class, gossipType), value);
-
-                if (claimable) poi.reserveTicket();
-            }
+            if (path != null && player != null)
+                this.gossip.startGossip(player.getUuid(), ClassTinkerers.getEnum(VillageGossipType.class, gossipType),
+                        value);
         }
     }
 
     @Unique
-    private void findExteriorDoor() {
-        int radius = 10;
+    private boolean findDoor() {
+        int radius = 20;
         BlockPos pos = this.getBlockPos();
 
-        Stream<PointOfInterest> pois = ((ServerWorld) this.getWorld()).getPointOfInterestStorage()
+        ImmutableList<PointOfInterest> pois = ((ServerWorld) this.getWorld()).getPointOfInterestStorage()
                 .getInCircle(entry -> entry.matchesKey(NewPointOfInterestTypes.WOODEN_DOOR), pos, radius,
                         PointOfInterestStorage.OccupationStatus.HAS_SPACE)
-                .sorted(Comparator.comparingDouble(poi -> poi.getPos().getSquaredDistance(pos)));
+                .sorted(Comparator.comparingDouble(poi -> poi.getPos().getSquaredDistance(pos)))
+                .collect(ImmutableList.toImmutableList());
 
-        for (PointOfInterest poi : pois.collect(ImmutableList.toImmutableList())) {
-            Path path = this.navigation.findPathTo(poi.getPos(), radius);
+        for (PointOfInterest poi : pois) {
+            MobNavigation navigation = new MobNavigation(this, this.getWorld());
+            navigation.setCanEnterOpenDoors(false);
+            navigation.setCanPathThroughDoors(false);
 
-            if (path != null) {
-                this.brain.remember(NewMemoryModuleType.HOUSE_EXTERIOR_DOOR,
+            Path pathToDoor = navigation.findPathTo(poi.getPos(), radius);
+
+            Direction doorFacing = this.getWorld().getBlockState(poi.getPos()).get(DoorBlock.FACING);
+            Path pathToFront = navigation.findPathTo(poi.getPos().add(doorFacing.getVector()), radius);
+
+            if (pathToDoor != null) {
+                this.brain.remember(NewMemoryModuleType.ROOM_DOOR,
                         GlobalPos.create(this.getWorld().getRegistryKey(), pos));
                 poi.reserveTicket();
+                return true;
             }
         }
+
+        return false;
     }
 }
