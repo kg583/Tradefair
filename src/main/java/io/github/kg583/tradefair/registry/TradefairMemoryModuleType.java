@@ -13,16 +13,16 @@ import java.util.Optional;
 
 import static io.github.kg583.tradefair.Main.MOD_ID;
 
-public class NewMemoryModuleType<U> extends MemoryModuleType<U> {
+public class TradefairMemoryModuleType<U> extends MemoryModuleType<U> {
     public static final MemoryModuleType<GlobalPos> ROOM_DOOR =
-            NewMemoryModuleType.register("room_door", GlobalPos.CODEC);
+            TradefairMemoryModuleType.register("room_door", GlobalPos.CODEC);
 
     private static <U> MemoryModuleType<U> register(String id, Codec<U> codec) {
         return Registry.register(Registries.MEMORY_MODULE_TYPE, new Identifier(MOD_ID, id),
                 new MemoryModuleType<>(Optional.of(codec)));
     }
 
-    public NewMemoryModuleType(Optional<Codec<U>> codec) {
+    public TradefairMemoryModuleType(Optional<Codec<U>> codec) {
         super(codec);
     }
 

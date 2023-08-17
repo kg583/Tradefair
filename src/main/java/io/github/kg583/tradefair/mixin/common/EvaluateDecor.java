@@ -1,31 +1,25 @@
 package io.github.kg583.tradefair.mixin.common;
 
-import com.chocohead.mm.api.ClassTinkerers;
-import com.google.common.collect.ImmutableList;
-import io.github.kg583.tradefair.registry.NewMemoryModuleType;
-import io.github.kg583.tradefair.registry.NewPointOfInterestTypes;
+import io.github.kg583.tradefair.decor.DecorTypes;
+import io.github.kg583.tradefair.registry.TradefairMemoryModuleType;
+import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
+import io.github.kg583.tradefair.util.PointOfInterestUtil;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InteractionObserver;
-import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.GlobalPos;
-import net.minecraft.village.VillageGossipType;
 import net.minecraft.village.VillagerDataContainer;
 import net.minecraft.village.VillagerGossips;
 import net.minecraft.world.World;
 import net.minecraft.world.poi.PointOfInterest;
 import net.minecraft.world.poi.PointOfInterestStorage;
-import net.minecraft.world.poi.PointOfInterestType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,9 +27,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Arrays;
-import java.util.Comparator;
 
 @Mixin(VillagerEntity.class)
 public abstract class EvaluateDecor extends MerchantEntity implements InteractionObserver, VillagerDataContainer {
@@ -51,43 +42,7 @@ public abstract class EvaluateDecor extends MerchantEntity implements Interactio
     private void evaluateDecor(CallbackInfo ci) {
         if (!findDoor()) return;
 
-        generateGossip("CARPETS", true, 5, NewPointOfInterestTypes.WOOL_CARPET);
-        generateGossip("DECOR_BLOCKS", false, 5, NewPointOfInterestTypes.BOOKSHELF,
-                NewPointOfInterestTypes.GLAZED_TERRACOTTA);
-        generateGossip("FLOWER_POTS", true, 5, NewPointOfInterestTypes.FLOWER_POT);
-        generateGossip("GLASS", true, 5, NewPointOfInterestTypes.GLASS);
-        generateGossip("LIGHTING", false, 20, NewPointOfInterestTypes.LIGHTING);
-        generateGossip("SIGNAGE", true, 5, NewPointOfInterestTypes.BANNER, NewPointOfInterestTypes.SIGN);
-    }
-
-    @SafeVarargs
-    @Unique
-    private void generateGossip(String gossipType, boolean personal, int value,
-                                RegistryKey<PointOfInterestType>... poiTypes) {
-        int radius = 20;
-        BlockPos pos = this.getBlockPos();
-
-        ImmutableList<PointOfInterest> pois = ((ServerWorld) this.getWorld()).getPointOfInterestStorage().getInCircle(
-                        entry -> Arrays.stream(poiTypes)
-                                .anyMatch(key -> Registries.POINT_OF_INTEREST_TYPE.get(key) == entry.value()), pos,
-                        radius,
-                        PointOfInterestStorage.OccupationStatus.ANY)
-                .sorted(Comparator.comparingDouble(poi -> poi.getPos().getSquaredDistance(pos)))
-                .collect(ImmutableList.toImmutableList());
-
-        BirdNavigation navigation = new BirdNavigation(this, this.getWorld());
-        navigation.setCanEnterOpenDoors(!personal);
-        navigation.setCanPathThroughDoors(!personal);
-
-        PlayerEntity player = this.getWorld().getClosestPlayer(this.getX(), this.getY(), this.getZ(), 50, null);
-
-        for (PointOfInterest poi : pois) {
-            Path path = navigation.findPathTo(poi.getPos(), radius);
-
-            if (path != null && player != null)
-                this.gossip.startGossip(player.getUuid(), ClassTinkerers.getEnum(VillageGossipType.class, gossipType),
-                        value);
-        }
+        DecorTypes.startAllGossips(this, this.gossip);
     }
 
     @Unique
@@ -95,13 +50,8 @@ public abstract class EvaluateDecor extends MerchantEntity implements Interactio
         int radius = 20;
         BlockPos pos = this.getBlockPos();
 
-        ImmutableList<PointOfInterest> pois = ((ServerWorld) this.getWorld()).getPointOfInterestStorage()
-                .getInCircle(entry -> entry.matchesKey(NewPointOfInterestTypes.WOODEN_DOOR), pos, radius,
-                        PointOfInterestStorage.OccupationStatus.HAS_SPACE)
-                .sorted(Comparator.comparingDouble(poi -> poi.getPos().getSquaredDistance(pos)))
-                .collect(ImmutableList.toImmutableList());
-
-        for (PointOfInterest poi : pois) {
+        for (PointOfInterest poi : PointOfInterestUtil.getSortedPOIs((ServerWorld) this.getWorld(), pos, radius,
+                PointOfInterestStorage.OccupationStatus.ANY, TradefairPointOfInterestTypes.WOODEN_DOOR)) {
             MobNavigation navigation = new MobNavigation(this, this.getWorld());
             navigation.setCanEnterOpenDoors(false);
             navigation.setCanPathThroughDoors(false);
@@ -112,7 +62,7 @@ public abstract class EvaluateDecor extends MerchantEntity implements Interactio
             Path pathToFront = navigation.findPathTo(poi.getPos().add(doorFacing.getVector()), radius);
 
             if (pathToDoor != null) {
-                this.brain.remember(NewMemoryModuleType.ROOM_DOOR,
+                this.brain.remember(TradefairMemoryModuleType.ROOM_DOOR,
                         GlobalPos.create(this.getWorld().getRegistryKey(), pos));
                 poi.reserveTicket();
                 return true;
