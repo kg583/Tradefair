@@ -15,10 +15,6 @@ public class VanillaDecor {
                 "FLOWER_POTS",
                 new DecorType("flower_pots", true, 5, 1, 20, 0, 1,
                         new Identifier("flower_pots")),
-                "GLASS",
-                new DecorType("glass", true, 5, 1, 50, 0, 1,
-                        new Identifier("c", "glass_blocks"),
-                        new Identifier("c", "glass_panes")),
                 "LIGHTING",
                 new DecorType("lighting", false, 10, 2, 200, 0, 5,
                         new Identifier("c", "lighting")),
@@ -28,7 +24,11 @@ public class VanillaDecor {
                 "SIGNAGE",
                 new DecorType("signage", true, 5, 1, 10, 0, 1,
                         new Identifier("banners"),
-                        new Identifier("all_signs"))
+                        new Identifier("all_signs")),
+                "WINDOWS",
+                new DecorType("window", true, 5, 1, 50, 0, 1,
+                        new Identifier("c", "glass_blocks"),
+                        new Identifier("c", "glass_panes"))
         ));
     }
 }
