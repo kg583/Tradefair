@@ -1,8 +1,8 @@
 {
   "values": [
+    "#c:froglights",
+    "#c:torches",
     "#minecraft:candles",
-    "#minecraft:froglights",
-    "#minecraft:torches",
     "minecraft:end_rod",
     "minecraft:jack_o_lantern",
     "minecraft:lantern",

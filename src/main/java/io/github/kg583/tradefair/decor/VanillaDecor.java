@@ -3,8 +3,6 @@ package io.github.kg583.tradefair.decor;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.util.Identifier;
 
-import static io.github.kg583.tradefair.Main.MOD_ID;
-
 public class VanillaDecor extends DecorTypes {
     public static void bootstrap() {
         DecorTypes.putAll(ImmutableMap.of(
@@ -24,7 +22,7 @@ public class VanillaDecor extends DecorTypes {
                         new Identifier("c", "glass_panes")),
                 "LIGHTING",
                 new DecorType("LIGHTING", false, 20, 2, 200, 0, 5,
-                        new Identifier(MOD_ID, "lighting")),
+                        new Identifier("c", "lighting")),
                 "SIGNAGE",
                 new DecorType("SIGNAGE", true, 5, 1, 5, 0, 1,
                         new Identifier("banners"),
