@@ -54,17 +54,17 @@ public class DecorType {
         this.decay = decay;
         this.shareDecrement = shareDecrement;
 
-        this.id = new Identifier(MOD_ID, this.name.toLowerCase());
+        this.id = new Identifier(MOD_ID, this.name);
         this.tags = tags;
     }
 
     public void addGossipType(EnumAdder builder) {
-        builder.addEnum(this.name, this.name.toLowerCase(), this.multiplier, this.maximum, this.decay,
+        builder.addEnum(this.name.toUpperCase(), this.name, this.multiplier, this.maximum, this.decay,
                 this.shareDecrement);
     }
 
     public VillageGossipType getGossipType() {
-        return ClassTinkerers.getEnum(VillageGossipType.class, this.name);
+        return ClassTinkerers.getEnum(VillageGossipType.class, this.name.toUpperCase());
     }
 
     public void merge(DecorType other) {

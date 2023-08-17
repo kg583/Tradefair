@@ -8,6 +8,10 @@
     "minecraft:lantern",
     "minecraft:redstone_lamp",
     "minecraft:sea_lantern",
-    "minecraft:soul_lantern"
+    "minecraft:soul_lantern",
+    {
+      "id": "#another_furniture:lamps",
+      "required": false
+    }
   ]
 }

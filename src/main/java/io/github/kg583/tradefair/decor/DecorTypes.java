@@ -33,6 +33,7 @@ public class DecorTypes {
     }
 
     static {
+        AnotherFurnitureDecor.bootstrap();
         VanillaDecor.bootstrap();
     }
 }
