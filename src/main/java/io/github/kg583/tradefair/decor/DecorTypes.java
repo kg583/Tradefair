@@ -14,6 +14,10 @@ public class DecorTypes {
         TYPES.forEach((name, type) -> type.addGossipType(builder));
     }
 
+    public static DecorType getDecorType(String name) {
+        return TYPES.get(name);
+    }
+
     public static void putAll(Map<String, DecorType> types) {
         types.forEach((name, type) -> {
             if (TYPES.containsKey(name)) {
