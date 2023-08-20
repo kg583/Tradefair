@@ -4,7 +4,7 @@
   "package": "io.github.kg583.tradefair.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "common.EvaluateDecor",
+    "common.VillagerHappiness",
     "common.ThawedSimpleRegistry",
     "common.VillagerEntityAccessor"
   ],
