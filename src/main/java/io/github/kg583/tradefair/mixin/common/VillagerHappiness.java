@@ -4,7 +4,7 @@ import io.github.kg583.tradefair.decor.DecorTypes;
 import io.github.kg583.tradefair.registry.TradefairMemoryModuleType;
 import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
 import io.github.kg583.tradefair.util.PointOfInterestUtil;
-import net.minecraft.block.BambooBlock;
+import io.github.kg583.tradefair.util.UUIDUtil;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InteractionObserver;
@@ -31,6 +31,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(VillagerEntity.class)
 public abstract class VillagerHappiness extends MerchantEntity implements InteractionObserver, VillagerDataContainer {
@@ -48,11 +49,8 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
         navigation.setCanEnterOpenDoors(false);
         navigation.setCanPathThroughDoors(false);
 
-        PlayerEntity player = this.getWorld().getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 50, null);
-
         Path pathToSky = navigation.findPathTo(pos.add(0, 20, 0), 40);
-        if (player != null && pathToSky != null) this.gossip.startGossip(player.getUuid(),
-                VillageGossipType.MINOR_NEGATIVE, 25);
+        if (pathToSky != null) this.gossip.startGossip(UUIDUtil.NIL, VillageGossipType.MINOR_NEGATIVE, 25);
     }
 
     @Inject(method = "wakeUp", at = @At(value = "TAIL"))
@@ -87,5 +85,11 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
         }
 
         return false;
+    }
+
+    @Inject(method = "getReputation", at = @At(value = "HEAD"), cancellable = true)
+    private void implementHappiness(PlayerEntity player, CallbackInfoReturnable<Integer> cir) {
+        cir.setReturnValue(this.gossip.getReputationFor(player.getUuid(), (gossipType) -> true) +
+                this.gossip.getReputationFor(UUIDUtil.NIL, (gossipType) -> true));
     }
 }

@@ -4,6 +4,7 @@ import com.chocohead.mm.api.ClassTinkerers;
 import com.chocohead.mm.api.EnumAdder;
 import com.google.common.collect.ImmutableSet;
 import io.github.kg583.tradefair.util.PointOfInterestUtil;
+import io.github.kg583.tradefair.util.UUIDUtil;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.MobEntity;
@@ -90,13 +91,11 @@ public class DecorType {
         navigation.setCanEnterOpenDoors(!this.personal);
         navigation.setCanPathThroughDoors(!this.personal);
 
-        PlayerEntity player = villager.getWorld().getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 50, null);
-
         for (PointOfInterest poi : PointOfInterestUtil.getSortedPOIs((ServerWorld) villager.getWorld(), pos, radius,
                 PointOfInterestStorage.OccupationStatus.ANY, this.key)) {
             Path path = navigation.findPathTo(poi.getPos(), radius);
 
-            if (path != null && player != null) gossips.startGossip(player.getUuid(), this.getGossipType(), value);
+            if (path != null) gossips.startGossip(UUIDUtil.NIL, this.getGossipType(), value);
         }
     }
 }
