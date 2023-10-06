@@ -1,5 +1,6 @@
 package io.github.kg583.tradefair.mixin.common;
 
+import com.google.common.collect.ImmutableSet;
 import io.github.kg583.tradefair.decor.DecorTypes;
 import io.github.kg583.tradefair.registry.TradefairMemoryModuleType;
 import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
@@ -48,7 +49,7 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
         navigation.setCanPathThroughDoors(false);
 
         Path pathToSky = navigation.findPathTo(pos.add(0, 20, 0), 40);
-        if (pathToSky != null) this.gossip.startGossip(UUIDUtil.NIL, VillageGossipType.MINOR_NEGATIVE, 25);
+        // if (pathToSky != null) this.gossip.startGossip(UUIDUtil.NIL, VillageGossipType.MINOR_NEGATIVE, 25);
     }
 
     @Inject(method = "wakeUp", at = @At(value = "TAIL"))
