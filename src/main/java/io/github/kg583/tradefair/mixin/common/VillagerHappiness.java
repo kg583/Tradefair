@@ -5,7 +5,6 @@ import io.github.kg583.tradefair.registry.TradefairMemoryModuleType;
 import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
 import io.github.kg583.tradefair.util.PointOfInterestUtil;
 import io.github.kg583.tradefair.util.UUIDUtil;
-import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InteractionObserver;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
@@ -16,7 +15,6 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.village.VillageGossipType;
 import net.minecraft.village.VillagerDataContainer;
@@ -72,9 +70,6 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
             navigation.setCanPathThroughDoors(false);
 
             Path pathToDoor = navigation.findPathTo(poi.getPos(), radius);
-
-            Direction doorFacing = this.getWorld().getBlockState(poi.getPos()).get(DoorBlock.FACING);
-            Path pathToFront = navigation.findPathTo(poi.getPos().add(doorFacing.getVector()), radius);
 
             if (pathToDoor != null) {
                 this.brain.remember(TradefairMemoryModuleType.ROOM_DOOR,
