@@ -6,7 +6,6 @@ import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
 import io.github.kg583.tradefair.util.PointOfInterestUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InteractionObserver;
-import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.passive.MerchantEntity;
@@ -15,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
+import net.minecraft.village.VillageGossipType;
 import net.minecraft.village.VillagerDataContainer;
 import net.minecraft.village.VillagerGossips;
 import net.minecraft.world.World;
@@ -44,12 +44,14 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
 
     @Inject(method = "sleep", at = @At(value = "TAIL"))
     private void dislikeSleepingOutside(BlockPos pos, CallbackInfo ci) {
-        BirdNavigation navigation = new BirdNavigation(this, this.getWorld());
-        navigation.setCanEnterOpenDoors(false);
-        navigation.setCanPathThroughDoors(false);
-
-        Path pathToSky = navigation.findPathTo(pos.add(0, 20, 0), 40);
-        // if (pathToSky != null) this.gossip.startGossip(UUIDUtil.NIL, VillageGossipType.MINOR_NEGATIVE, 25);
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                if (this.getWorld().isSkyVisible(pos.add(x, 0, z))) {
+                    this.gossip.startGossip(NIL, VillageGossipType.MINOR_NEGATIVE, 25);
+                    return;
+                }
+            }
+        }
     }
 
     @Inject(method = "wakeUp", at = @At(value = "TAIL"))
