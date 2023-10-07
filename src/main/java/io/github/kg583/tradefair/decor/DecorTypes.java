@@ -4,8 +4,11 @@ import com.chocohead.mm.api.EnumAdder;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.village.VillagerGossips;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.github.kg583.tradefair.util.DecorConfig.EXCLUDE_DECORS;
 
 public class DecorTypes {
     private static final Map<String, DecorType> TYPES = new HashMap<>();
@@ -33,7 +36,9 @@ public class DecorTypes {
     }
 
     public static void startAllGossips(MobEntity villager, VillagerGossips gossips) {
-        TYPES.forEach((name, type) -> type.startGossip(villager, gossips));
+        TYPES.forEach((name, type) -> {
+            if (!Arrays.asList(EXCLUDE_DECORS).contains(name)) type.startGossip(villager, gossips);
+        });
     }
 
     static {
