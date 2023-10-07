@@ -1,33 +1,30 @@
 package io.github.kg583.tradefair.gui;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.NarratorManager;
-import net.minecraft.text.MutableText;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class LodestoneScreen extends Screen {
+public class LodestoneScreen extends HandledScreen<LodestoneScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("minecraft", "textures/gui/book.png");
 
-    public final MutableText name;
+    public final Text title;
 
-    public LodestoneScreen(MutableText name) {
-        super(NarratorManager.EMPTY);
+    public LodestoneScreen(LodestoneScreenHandler handler, PlayerInventory inventory, Text title) {
+        super(handler, inventory, title);
 
-        this.name = name;
+        this.title = title;
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
-        int k = this.textRenderer.getWidth(this.name);
-        context.drawText(this.textRenderer, this.name, (this.width - 192) / 2 + 192 - k - 44, 18, 0, false);
-    }
-
-    @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.renderBackground(context, mouseX, mouseY, delta);
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         context.drawTexture(TEXTURE, (this.width - 192) / 2, 2, 0, 0, 192, 192);
+    }
+
+    @Override
+    protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+        int k = this.textRenderer.getWidth(this.title);
+        context.drawText(this.textRenderer, this.title, (this.width - 192) / 2 - k - 44, 18, 0, false);
     }
 }
