@@ -19,6 +19,9 @@
     "preLaunch": [
       "io.github.kg583.tradefair.PreLaunch"
     ],
+    "client": [
+      "io.github.kg583.tradefair.Client"
+    ],
     "main": [
       "io.github.kg583.tradefair.Main"
     ],

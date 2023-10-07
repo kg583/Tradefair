@@ -4,9 +4,10 @@
   "package": "io.github.kg583.tradefair.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "common.VillagerHappiness",
+    "common.BlockOverride",
     "common.ThawedSimpleRegistry",
-    "common.VillagerEntityAccessor"
+    "common.VillagerEntityAccessor",
+    "common.VillagerHappiness"
   ],
   "client": [
   ],

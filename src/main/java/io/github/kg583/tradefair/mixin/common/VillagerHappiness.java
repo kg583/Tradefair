@@ -1,6 +1,5 @@
 package io.github.kg583.tradefair.mixin.common;
 
-import com.google.common.collect.ImmutableSet;
 import io.github.kg583.tradefair.decor.DecorTypes;
 import io.github.kg583.tradefair.registry.TradefairMemoryModuleType;
 import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
