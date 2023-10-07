@@ -4,7 +4,6 @@ import com.chocohead.mm.api.ClassTinkerers;
 import com.chocohead.mm.api.EnumAdder;
 import com.google.common.collect.ImmutableSet;
 import io.github.kg583.tradefair.util.PointOfInterestUtil;
-import io.github.kg583.tradefair.util.UUIDUtil;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.MobEntity;
@@ -27,6 +26,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static io.github.kg583.tradefair.Main.MOD_ID;
+import static io.github.kg583.tradefair.util.DecorConfig.DECOR_RADIUS;
+import static io.github.kg583.tradefair.util.UUIDUtil.NIL;
 
 public class DecorType {
     public final String name;
@@ -83,7 +84,7 @@ public class DecorType {
     }
 
     public void startGossip(MobEntity villager, VillagerGossips gossips) {
-        int radius = 20;
+        int radius = DECOR_RADIUS;
         BlockPos pos = villager.getBlockPos();
 
         BirdNavigation navigation = new BirdNavigation(villager, villager.getWorld());
@@ -94,7 +95,7 @@ public class DecorType {
                 PointOfInterestStorage.OccupationStatus.ANY, this.key)) {
             Path path = navigation.findPathTo(poi.getPos(), radius);
 
-            if (path != null) gossips.startGossip(UUIDUtil.NIL, this.getGossipType(), value);
+            if (path != null) gossips.startGossip(NIL, this.getGossipType(), value);
         }
     }
 }

@@ -4,7 +4,6 @@ import io.github.kg583.tradefair.decor.DecorTypes;
 import io.github.kg583.tradefair.registry.TradefairMemoryModuleType;
 import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
 import io.github.kg583.tradefair.util.PointOfInterestUtil;
-import io.github.kg583.tradefair.util.UUIDUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InteractionObserver;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
@@ -16,7 +15,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
-import net.minecraft.village.VillageGossipType;
 import net.minecraft.village.VillagerDataContainer;
 import net.minecraft.village.VillagerGossips;
 import net.minecraft.world.World;
@@ -30,6 +28,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static io.github.kg583.tradefair.util.DecorConfig.DOOR_RADIUS;
+import static io.github.kg583.tradefair.util.UUIDUtil.NIL;
 
 @Mixin(VillagerEntity.class)
 public abstract class VillagerHappiness extends MerchantEntity implements InteractionObserver, VillagerDataContainer {
@@ -60,7 +61,7 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
 
     @Unique
     private boolean findDoor() {
-        int radius = 20;
+        int radius = DOOR_RADIUS;
         BlockPos pos = this.getBlockPos();
 
         for (PointOfInterest poi : PointOfInterestUtil.getSortedPOIs((ServerWorld) this.getWorld(), pos, radius,
@@ -85,6 +86,6 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
     @Inject(method = "getReputation", at = @At(value = "HEAD"), cancellable = true)
     private void implementHappiness(PlayerEntity player, CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(this.gossip.getReputationFor(player.getUuid(), (gossipType) -> true) +
-                this.gossip.getReputationFor(UUIDUtil.NIL, (gossipType) -> true));
+                this.gossip.getReputationFor(NIL, (gossipType) -> true));
     }
 }
