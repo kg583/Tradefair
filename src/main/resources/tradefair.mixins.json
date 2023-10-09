@@ -6,9 +6,11 @@
   "mixins": [
     "common.BlockOverride",
     "common.LodestoneCompassLore",
+    "common.ShipwreckedVillagers",
     "common.ThawedSimpleRegistry",
     "common.VillagerEntityAccessor",
-    "common.VillagerHappiness"
+    "common.VillagerHappiness",
+    "common.WanderingVillagers"
   ],
   "client": [
   ],
