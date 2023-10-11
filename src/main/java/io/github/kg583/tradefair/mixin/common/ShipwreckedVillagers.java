@@ -2,9 +2,6 @@ package io.github.kg583.tradefair.mixin.common;
 
 import io.github.kg583.tradefair.util.SpawnUtil;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.structure.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockBox;
@@ -36,19 +33,8 @@ public abstract class ShipwreckedVillagers extends SimpleStructurePiece {
     private void spawnOnBeach(StructureWorldAccess world, StructureAccessor structureAccessor,
                               ChunkGenerator chunkGenerator, Random random, BlockBox chunkBox, ChunkPos chunkPos,
                               BlockPos pivot, CallbackInfo ci) {
-        if (!this.grounded || random.nextInt(4) != 0) {
-            return;
-        }
-
-        int count = random.nextInt(3);
-        for (int x = 0; x < count; x++) {
-            BlockPos spawnPos = SpawnUtil.getNearbySpawnPos(world, this.pos, EntityType.VILLAGER, random, 8);
-            if (spawnPos == null || !SpawnUtil.doesNotSuffocateAt(world, spawnPos, EntityType.VILLAGER)) continue;
-
-            VillagerEntity entity = new VillagerEntity(EntityType.VILLAGER, world.toServerWorld());
-            entity.refreshPositionAndAngles(spawnPos, 0, 0);
-            entity.initialize(world, world.getLocalDifficulty(spawnPos), SpawnReason.SPAWNER, null, null);
-            world.spawnEntity(entity);
+        if (this.grounded && random.nextInt(4) == 0) {
+            SpawnUtil.trySpawns(1 + random.nextInt(3), world.toServerWorld(), this.pos, EntityType.VILLAGER, random, 8);
         }
     }
 }
