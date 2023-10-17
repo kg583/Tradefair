@@ -9,14 +9,14 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(VillagerEntity.class)
 public interface VillagerEntityAccessor {
-    @Mutable
     @Accessor("MEMORY_MODULES")
-    static void setMemoryModules(ImmutableList<MemoryModuleType<?>> value) {
+    static ImmutableList<MemoryModuleType<?>> getMemoryModules() {
         throw new AssertionError();
     }
 
+    @Mutable
     @Accessor("MEMORY_MODULES")
-    static ImmutableList<MemoryModuleType<?>> getMemoryModules() {
+    static void setMemoryModules(ImmutableList<MemoryModuleType<?>> value) {
         throw new AssertionError();
     }
 }

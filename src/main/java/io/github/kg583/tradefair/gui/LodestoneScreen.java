@@ -19,18 +19,29 @@ public class LodestoneScreen extends HandledScreen<LodestoneScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("minecraft", "textures/gui/book.png");
 
     public final Text title;
+
     public final Map<VillagerProfession, List<Entity>> employment;
+    public final double happiness;
 
     public LodestoneScreen(LodestoneScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
 
         this.title = title;
         this.employment = getEmployment(handler).orElse(new HashMap<>());
+        this.happiness = getHappiness(handler).orElse((double) 0);
     }
 
     private static Optional<Map<VillagerProfession, List<Entity>>> getEmployment(ScreenHandler handler) {
         if (handler instanceof LodestoneScreenHandler) {
             return Optional.of(((LodestoneScreenHandler) handler).employment);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private static Optional<Double> getHappiness(ScreenHandler handler) {
+        if (handler instanceof LodestoneScreenHandler) {
+            return Optional.of(((LodestoneScreenHandler) handler).happiness);
         } else {
             return Optional.empty();
         }
@@ -46,10 +57,14 @@ public class LodestoneScreen extends HandledScreen<LodestoneScreenHandler> {
         context.drawText(this.textRenderer, this.title, 28, 0, 0, false);
 
         int y = 0;
-        for (Map.Entry<VillagerProfession, List<Entity>> entry : employment.entrySet()) {
+        for (Map.Entry<VillagerProfession, List<Entity>> entry : this.employment.entrySet()) {
             y += 16;
             context.drawText(this.textRenderer, Text.of(String.format("%dx %s", entry.getValue().size(),
                     StringUtils.capitalize(entry.getKey().id()))), 28, y, 0, false);
         }
+
+        y += 32;
+        context.drawText(this.textRenderer, Text.of(String.format("Happiness — %.2f", this.happiness)), 28, y, 0,
+                false);
     }
 }

@@ -19,6 +19,7 @@ import static io.github.kg583.tradefair.Main.LODESTONE_SCREEN_HANDLER;
 
 public class LodestoneScreenHandler extends ScreenHandler {
     protected Map<VillagerProfession, List<Entity>> employment;
+    protected double happiness;
 
     public LodestoneScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
         this(syncId, playerInventory);
@@ -35,12 +36,15 @@ public class LodestoneScreenHandler extends ScreenHandler {
 
                             return villagerEntities;
                         }));
+
+        happiness = buf.readDouble();
     }
 
     public LodestoneScreenHandler(int syncId, PlayerInventory playerInventory) {
         super(LODESTONE_SCREEN_HANDLER, syncId);
 
         employment = new HashMap<>();
+        happiness = 0;
     }
 
     @Override

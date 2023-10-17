@@ -76,5 +76,7 @@ public class LodestoneBlockEntity extends BlockEntity implements Nameable, Exten
                     packetByteBuf.writeInt(villagerEntities.size());
                     villagerEntities.forEach(villagerEntity -> packetByteBuf.writeUuid(villagerEntity.getUuid()));
                 });
+
+        buf.writeDouble(VillagerUtil.getHappiness(player.getServerWorld(), this.pos, MAX_VILLAGE_RADIUS));
     }
 }

@@ -8,18 +8,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.village.VillagerProfession;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class VillagerUtil {
     public static Map<VillagerProfession, List<VillagerEntity>> getEmployment(ServerWorld world, BlockPos pos,
-                                                                           int radius) {
+                                                                              int radius) {
         Map<VillagerProfession, List<VillagerEntity>> employment = new HashMap<>();
 
-        for (VillagerEntity villager : world.getEntitiesByType(EntityType.VILLAGER, new Box(pos).expand(radius),
-                Entity::isAlive)) {
+        for (VillagerEntity villager : getVillagers(world, pos, radius)) {
             VillagerProfession profession = villager.getVillagerData().getProfession();
 
             if (employment.containsKey(profession)) {
@@ -30,5 +26,15 @@ public abstract class VillagerUtil {
         }
 
         return employment;
+    }
+
+    public static double getHappiness(ServerWorld world, BlockPos pos, int radius) {
+        return Arrays.stream(getVillagers(world, pos, radius).stream()
+                .map(villagerEntity -> villagerEntity.getGossip().getReputationFor(UUIDUtil.NIL,
+                        (gossipType) -> true)).toArray()).mapToDouble((reputation) -> (double)(int) reputation).average().orElse(0);
+    }
+
+    public static List<VillagerEntity> getVillagers(ServerWorld world, BlockPos pos, int radius) {
+        return world.getEntitiesByType(EntityType.VILLAGER, new Box(pos).expand(radius), Entity::isAlive);
     }
 }
