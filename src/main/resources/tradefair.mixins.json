@@ -7,10 +7,10 @@
     "common.BlockOverride",
     "common.LodestoneCompassLore",
     "common.ShipwreckedVillagers",
+    "common.SpawnVillagers",
     "common.ThawedSimpleRegistry",
     "common.VillagerEntityAccessor",
     "common.VillagerHappiness",
-    "common.SpawnVillagers",
     "common.WanderingVillagers"
   ],
   "client": [

@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static io.github.kg583.tradefair.util.DecorConfig.DOOR_RADIUS;
+import static io.github.kg583.tradefair.util.TradefairConfig.DOOR_RADIUS;
 import static io.github.kg583.tradefair.util.UUIDUtil.NIL;
 
 @Mixin(VillagerEntity.class)

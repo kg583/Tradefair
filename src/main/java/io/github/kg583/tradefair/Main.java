@@ -9,6 +9,7 @@ import io.github.kg583.tradefair.util.RunUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
@@ -21,7 +22,7 @@ public class Main implements ModInitializer {
     public static final String MOD_ID = "tradefair";
 
     public static final BlockEntityType<LodestoneBlockEntity> LODESTONE_BLOCK_ENTITY;
-    public static final ScreenHandlerType<LodestoneScreenHandler> LODESTONE_SCREEN_HANDLER;
+    public static final ExtendedScreenHandlerType<LodestoneScreenHandler> LODESTONE_SCREEN_HANDLER;
 
     @Override
     public void onInitialize() {
@@ -37,6 +38,6 @@ public class Main implements ModInitializer {
         LODESTONE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier("lodestone"),
                 FabricBlockEntityTypeBuilder.create(LodestoneBlockEntity::new, Blocks.LODESTONE).build(null));
         LODESTONE_SCREEN_HANDLER = Registry.register(Registries.SCREEN_HANDLER, new Identifier("lodestone"),
-                new ScreenHandlerType<>(LodestoneScreenHandler::new, FeatureFlags.VANILLA_FEATURES));
+                new ExtendedScreenHandlerType<>(LodestoneScreenHandler::new));
     }
 }

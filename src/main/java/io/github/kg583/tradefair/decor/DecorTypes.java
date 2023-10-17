@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.github.kg583.tradefair.util.DecorConfig.EXCLUDE_DECORS;
+import static io.github.kg583.tradefair.util.TradefairConfig.EXCLUDE_DECORS;
 
 public class DecorTypes {
     private static final Map<String, DecorType> TYPES = new HashMap<>();

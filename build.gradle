@@ -34,8 +34,8 @@ dependencies {
 
     // Everything else
     implementation 'com.github.Chocohead:Fabric-ASM:v2.3'
-    implementation "com.github.LlamaLad7:MixinExtras:0.1.1"
-    annotationProcessor "com.github.LlamaLad7:MixinExtras:0.1.1"
+    implementation "com.github.LlamaLad7:MixinExtras:0.2.0"
+    annotationProcessor "com.github.LlamaLad7:MixinExtras:0.2.0"
     modImplementation "dev.lambdaurora:spruceui:5.0.0+1.20"
     }
 

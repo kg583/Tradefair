@@ -1,22 +1,26 @@
 package io.github.kg583.tradefair.block;
 
 import io.github.kg583.tradefair.gui.LodestoneScreenHandler;
+import io.github.kg583.tradefair.util.VillagerUtil;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import static io.github.kg583.tradefair.Main.LODESTONE_BLOCK_ENTITY;
+import static io.github.kg583.tradefair.util.TradefairConfig.MAX_VILLAGE_RADIUS;
 
-public class LodestoneBlockEntity extends BlockEntity implements Nameable, NamedScreenHandlerFactory {
+public class LodestoneBlockEntity extends BlockEntity implements Nameable, ExtendedScreenHandlerFactory {
     @Nullable
     private Text customName;
 
@@ -36,11 +40,12 @@ public class LodestoneBlockEntity extends BlockEntity implements Nameable, Named
     }
 
     public Text getDisplayName() {
-        return this.getName();
+        return Text.of("Village" + (this.customName != null ? " — " + this.getName().getString() : ""));
     }
 
     public Text getName() {
-        return this.customName != null ? this.customName : Text.translatable(getCachedState().getBlock().getTranslationKey());
+        return this.customName != null ? this.customName :
+                Text.translatable(getCachedState().getBlock().getTranslationKey());
     }
 
     public void readNbt(NbtCompound nbt) {
@@ -61,5 +66,15 @@ public class LodestoneBlockEntity extends BlockEntity implements Nameable, Named
             nbt.putString("CustomName", Text.Serializer.toJson(this.customName));
         }
 
+    }
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeMap(VillagerUtil.getEmployment(player.getServerWorld(), this.pos, MAX_VILLAGE_RADIUS),
+                (packetByteBuf, villagerProfession) -> packetByteBuf.writeString(villagerProfession.id()),
+                (packetByteBuf, villagerEntities) -> {
+                    packetByteBuf.writeInt(villagerEntities.size());
+                    villagerEntities.forEach(villagerEntity -> packetByteBuf.writeUuid(villagerEntity.getUuid()));
+                });
     }
 }

@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static io.github.kg583.tradefair.Main.MOD_ID;
-import static io.github.kg583.tradefair.util.DecorConfig.DECOR_RADIUS;
+import static io.github.kg583.tradefair.util.TradefairConfig.DECOR_RADIUS;
 import static io.github.kg583.tradefair.util.UUIDUtil.NIL;
 
 public class DecorType {
