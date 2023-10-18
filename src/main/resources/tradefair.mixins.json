@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "common.BlockOverride",
+    "common.DeleteNitwits",
     "common.LodestoneCompassLore",
     "common.ShipwreckedVillagers",
     "common.SpawnVillagers",
