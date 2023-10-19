@@ -1,0 +1,33 @@
+{
+	"parent": "minecraft:tradefair/trade",
+	"display": {
+		"icon": {
+			"item": "minecraft:enchanted_book"
+		},
+		"title": {
+			"translate": "advancements.tradefair.trade_max.title"
+		},
+		"description": {
+			"translate": "advancements.tradefair.trade_max.description"
+		},
+		"frame": "goal",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"traded": {
+			"trigger": "minecraft:villager_trade",
+			"conditions": {
+				"villager": {
+					"nbt": "{VillagerData:{level:5}}"
+				}
+			}
+		}
+	},
+	"requirements": [
+		[
+			"traded"
+		]
+	]
+}
