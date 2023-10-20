@@ -1,5 +1,5 @@
 {
-	"parent": "minecraft:tradefair/trade",
+	"parent": "tradefair:tradefair/trade",
 	"display": {
 		"icon": {
 			"item": "minecraft:enchanted_book"

@@ -1,5 +1,5 @@
 {
-	"parent": "minecraft:tradefair/root",
+	"parent": "tradefair:tradefair/root",
 	"display": {
 		"icon": {
 			"item": "minecraft:bell"

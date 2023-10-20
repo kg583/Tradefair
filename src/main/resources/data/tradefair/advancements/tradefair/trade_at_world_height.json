@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:tradefair/trade",
+  "parent": "tradefair:tradefair/trade",
   "criteria": {
     "trade_at_world_height": {
       "conditions": {
