@@ -37,81 +37,12 @@
         }
       }
     },
-    "in_desert_village": {
+    "in_village": {
       "conditions": {
         "player": [
           {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structure": "minecraft:village_desert"
-              }
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:location"
-    },
-    "in_plains_village": {
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structure": "minecraft:village_plains"
-              }
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:location"
-    },
-    "in_savanna_village": {
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structure": "minecraft:village_savanna"
-              }
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:location"
-    },
-    "in_snowy_village": {
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structure": "minecraft:village_snowy"
-              }
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:location"
-    },
-    "in_taiga_village": {
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structure": "minecraft:village_taiga"
-              }
-            }
+            "condition": "minecraft:reference",
+            "name": "tradefair:any_village"
           }
         ]
       },
@@ -122,11 +53,7 @@
     [
       "acquired_emerald",
       "interacted_with_villager",
-      "in_desert_village",
-      "in_plains_village",
-      "in_savanna_village",
-      "in_snowy_village",
-      "in_taiga_village"
+      "in_village"
     ]
   ]
 }
