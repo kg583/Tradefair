@@ -1,0 +1,57 @@
+{
+	"parent": "tradefair:tradefair/find_village",
+	"display": {
+		"icon": {
+			"item": "minecraft:lodestone"
+		},
+		"title": {
+			"translate": "advancements.tradefair.take_census.title"
+		},
+		"description": {
+			"translate": "advancements.tradefair.take_census.description"
+		},
+		"frame": "task",
+		"show_toast": true,
+		"announce_to_chat": true,
+		"hidden": false
+	},
+	"criteria": {
+		"use_lodestone_in_village": {
+			"conditions": {
+				"location": [
+					{
+						"condition": "minecraft:location_check",
+						"predicate": {
+							"block": {
+								"blocks": [
+									"minecraft:lodestone"
+								]
+							}
+						}
+					},
+					{
+						"condition": "minecraft:inverted",
+						"term": {
+							"condition": "minecraft:match_tool",
+							"predicate": {
+								"items": [
+									"minecraft:compass"
+								]
+							}
+						}
+					},
+					{
+						"condition": "minecraft:reference",
+						"name": "tradefair:any_village"
+					}
+				]
+			},
+			"trigger": "minecraft:item_used_on_block"
+		}
+	},
+	"requirements": [
+		[
+			"use_lodestone_in_village"
+		]
+	]
+}

@@ -3,6 +3,8 @@
 	"advancements.tradefair.find_village.description": "Sight landlubbers' territory",
 	"advancements.tradefair.root.title": "Tradefair",
 	"advancements.tradefair.root.description": "Yar be needin' a crew",
+	"advancements.tradefair.take_census.title": "Spotted off the port bow",
+	"advancements.tradefair.take_census.description": "Take count of landlubbers in yer crew with a Loderock",
 	"advancements.tradefair.trade_max.title": "Yer alright, landlubber",
 	"advancements.tradefair.trade_max.description": "Sell yer precious gold to a landlubber with some sense!"
 }

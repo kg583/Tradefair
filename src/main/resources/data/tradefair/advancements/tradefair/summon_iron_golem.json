@@ -26,6 +26,10 @@
               "type": "minecraft:iron_golem"
             },
             "entity": "this"
+          },
+          {
+            "condition": "minecraft:reference",
+            "name": "tradefair:any_village"
           }
         ]
       }

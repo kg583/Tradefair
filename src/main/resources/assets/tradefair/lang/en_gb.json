@@ -1,8 +1,10 @@
 {
 	"advancements.tradefair.find_village.title": "A Quaint Little Town",
-	"advancements.tradefair.find_village.description": "Discover a village",
+	"advancements.tradefair.find_village.description": "Discover a Village",
 	"advancements.tradefair.root.title": "Tradefair",
 	"advancements.tradefair.root.description": "It takes a village",
+	"advancements.tradefair.take_census.title": "Get a Lode of This",
+	"advancements.tradefair.take_census.description": "Use a Lodestone to take a census of a Village",
 	"advancements.tradefair.trade_max.title": "You've Got a Friend in Me",
 	"advancements.tradefair.trade_max.description": "Trade with a Master Villager"
 }

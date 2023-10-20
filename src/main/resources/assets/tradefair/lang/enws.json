@@ -3,6 +3,8 @@
 	"advancements.tradefair.find_village.description": "Find you a village",
 	"advancements.tradefair.root.title": "Tradefair",
 	"advancements.tradefair.root.description": "Thou doth require a village",
+	"advancements.tradefair.take_census.title": "Verily, behold",
+	"advancements.tradefair.take_census.description": "Use a Lodestone to survey peasants of thine village",
 	"advancements.tradefair.trade_max.title": "You may find kinship in my enterprises",
-	"advancements.tradefair.trade_max.description": "Trade you with a Master of coin"
+	"advancements.tradefair.trade_max.description": "Trade you with a master of coin"
 }
