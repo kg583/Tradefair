@@ -38,6 +38,9 @@
       "translate": "advancements.adventure.trade_at_world_height.title"
     }
   },
+  "rewards": {
+    "experience": 100
+  },
   "requirements": [
     [
       "trade_at_world_height"
