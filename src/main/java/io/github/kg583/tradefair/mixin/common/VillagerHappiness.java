@@ -6,6 +6,7 @@ import io.github.kg583.tradefair.registry.TradefairPointOfInterestTypes;
 import io.github.kg583.tradefair.util.PointOfInterestUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InteractionObserver;
+import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.passive.MerchantEntity;
@@ -76,7 +77,7 @@ public abstract class VillagerHappiness extends MerchantEntity implements Intera
 
             if (pathToDoor != null) {
                 this.brain.remember(TradefairMemoryModuleType.ROOM_DOOR,
-                        GlobalPos.create(this.getWorld().getRegistryKey(), pos));
+                        GlobalPos.create(this.getWorld().getRegistryKey(), poi.getPos()));
                 poi.reserveTicket();
                 return true;
             }
